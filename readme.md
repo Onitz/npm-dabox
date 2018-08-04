@@ -10,6 +10,19 @@ Status being a nubmer (ie 400), and response being the data.
 
 `keyListen( isEnable, up, down, left, right, space, ctrl)`  
 Adds some keyboard listeners to the page for typical game commands. All input parameters are callback functions.
+```
+wet = require( wetbox );
+wet.keyListen( 
+  () => { return true },
+  () => { console.log( 'up' ) }, 
+  () => { console.log( 'down' ) }, 
+  () => { console.log( 'left' ) }, 
+  () => { console.log( 'right' ) }, 
+  () => { console.log( 'space' ) }, 
+  () => { console.log( 'ctrl' ) } 
+);
+```
+
 
 `randomizeArray( array )`  
 Returns array with random-ordered elements using the Fisher-Yates-Knuth shuffle.
