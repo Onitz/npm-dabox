@@ -13,3 +13,6 @@ Adds some keyboard listeners to the page for typical game commands. All input pa
 
 `randomizeArray( array )`  
 Returns array with random-ordered elements using the Fisher-Yates-Knuth shuffle.
+
+`leftPad( str, len, fillerChar )`
+Pads a string up to length len, with single-char: fillerChar 
