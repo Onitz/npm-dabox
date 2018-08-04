@@ -1,6 +1,6 @@
 {
   "name": "wetbox",
-  "version": "0.0.22",
+  "version": "0.1.23",
   "description": "A collection of prototype tools",
   "main": "index.js",
   "scripts": {
@@ -11,8 +11,6 @@
     "url": "git+https://github.com/Onitz/npm-wetbox.git"
   },
   "keywords": [
-    "onitz",
-    "dabson",
     "prototype",
     "sandbox"
   ],
