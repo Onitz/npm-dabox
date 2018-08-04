@@ -62,3 +62,15 @@ exports.randomizeArray = function( array ) {
   }
   return array;
 }
+
+exports.leftPad = function( str, len, fillerChar=' ' ) {
+  if( str.length > len ) { 
+    return;
+  }
+
+  if(fillerChar.length > 1 ) { 
+    fillerChar=fillerChar.substring(0,1);
+  }
+
+  return fillerChar.repeat( len - str.length ) + str;
+}
