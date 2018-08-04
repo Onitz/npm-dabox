@@ -1,5 +1,7 @@
+let packageJson = require('./package.json');
+
 exports.getVersion = function() {
-  console.log('Wetbox version 0.0.2');
+  return 'Wetbox version ' + packageJson.version;
 }
 
 function getUrl( url, callback ) {
