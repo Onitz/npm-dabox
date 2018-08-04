@@ -1,0 +1,25 @@
+{
+  "name": "dabox",
+  "version": "0.0.1",
+  "description": "A collection of prototype tools",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Onitz/npm-dabox.git"
+  },
+  "keywords": [
+    "onitz",
+    "dabson",
+    "prototype",
+    "sandbox"
+  ],
+  "author": "Andrew Dabson <cyphlix@gmai.com> (https://dabson.co)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Onitz/npm-dabox/issues"
+  },
+  "homepage": "https://github.com/Onitz/npm-dabox#readme"
+}
