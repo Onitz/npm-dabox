@@ -12,4 +12,4 @@ Status being a nubmer (ie 400), and response being the data.
 Adds some keyboard listeners to the page for typical game commands. All input parameters are callback functions.
 
 `randomizeArray( array )`  
-Takes an array and randomizes it using the Fisher-Yates-Knuth shuffle.
+Returns array with random-ordered elements using the Fisher-Yates-Knuth shuffle.
