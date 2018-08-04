@@ -1,5 +1,5 @@
 exports.getVersion = function() {
-  console.log('Dabox version 0.0.1');
+  console.log('Wetbox version 0.0.2');
 }
 
 function getUrl( url, callback ) {

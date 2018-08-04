@@ -1,6 +1,6 @@
 {
-  "name": "dabox",
-  "version": "0.0.1",
+  "name": "wetbox",
+  "version": "0.0.2",
   "description": "A collection of prototype tools",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Onitz/npm-dabox.git"
+    "url": "git+https://github.com/Onitz/npm-wetbox.git"
   },
   "keywords": [
     "onitz",
@@ -19,7 +19,7 @@
   "author": "Andrew Dabson <cyphlix@gmai.com> (https://dabson.co)",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Onitz/npm-dabox/issues"
+    "url": "https://github.com/Onitz/npm-wetbox/issues"
   },
-  "homepage": "https://github.com/Onitz/npm-dabox#readme"
+  "homepage": "https://github.com/Onitz/npm-wetbox#readme"
 }
