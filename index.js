@@ -230,7 +230,7 @@ exports.Game = class {
           'XYZ' ))
 
       this.box.quaternion.multiplyQuaternions( deltaRotationQuaternion, this.box.quaternion )
-      this.camera.quaternion.multiplyQuaternions( deltaRotationQuaternion, camera.quaternion )
+      this.camera.quaternion.multiplyQuaternions( deltaRotationQuaternion, this.camera.quaternion )
       this.cameraPosition.applyAxisAngle( new THREE.Vector3( 0, 1, 0), gamma)
 
       let rotation = new THREE.Quaternion()
@@ -272,6 +272,7 @@ exports.Game = class {
   }
 
   resetControls() {
+    this.isDragging = false
     this.keySwitch = {
       w: false, 
       a: false, 
