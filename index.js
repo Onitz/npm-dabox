@@ -185,25 +185,36 @@ exports.Game = class {
 
     // Add listeners
     window.addEventListener( 'resize', x => { this.doResize() } )
+    window.addEventListener( 'blur', x => { this.resetControls() } )
     exports.keyListen( 
-      () => { return true },
-      () => { console.log( 'up' ); this.keySwitch.w = true },
-      () => { console.log( 'left' ); this.keySwitch.a = true },
-      () => { console.log( 'down' ); this.keySwitch.s = true },
-      () => { console.log( 'right' ); this.keySwitch.d = true },
-      () => { console.log( 'crouch' ); this.keySwitch.c = true },
-      () => { console.log( 'space' ); this.isJumping = true },
-      () => { console.log( 'esc' ) },
-      () => { console.log( 'tab' ) },
-      () => { console.log( 'enter' ) },
+      enabled => { return true },
+      up      => { this.keySwitch.w = true },
+      left    => { this.keySwitch.a = true },
+      down    => { this.keySwitch.s = true },
+      right   => { this.keySwitch.d = true },
+      crouch  => { this.keySwitch.c = true },
+      space   => { this.isJumping = true },
+      esc     => { console.log( 'esc' ) },
+      tab     => { console.log( 'tab' ) },
+      enter   => { console.log( 'enter' ) },
     )
     exports.keyUpListen(
-      () => { console.log( 'release up' ); this.keySwitch.w = false },
-      () => { console.log( 'release left' ); this.keySwitch.a = false },
-      () => { console.log( 'release down' ); this.keySwitch.s = false },
-      () => { console.log( 'release right' ); this.keySwitch.d = false },
-      () => { console.log( 'release crouch' ); this.keySwitch.c = false },
+      releaseUp     => { this.keySwitch.w = false },
+      releaseLeft   => { this.keySwitch.a = false },
+      releaseDown   => { this.keySwitch.s = false },
+      releaseRight  => { this.keySwitch.d = false },
+      releaseCrouch => { this.keySwitch.c = false },
     )
+  }
+
+  resetControls() {
+    this.keySwitch = {
+      w: false, 
+      a: false, 
+      s: false, 
+      d: false,
+      c: false,
+    } 
   }
 
   init( THREE ) {
