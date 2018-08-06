@@ -174,6 +174,7 @@ exports.Game = class {
       ended: false,
     }
 
+    this.zeroVector = x => { return new THREE.Vector3( 0, 0, 0 ) }
     this.init( THREE )
     this.animate()
 
@@ -185,7 +186,7 @@ exports.Game = class {
       () => { console.log( 'left' ); this.keySwitch.a = true },
       () => { console.log( 'down' ); this.keySwitch.s = true },
       () => { console.log( 'right' ); this.keySwitch.d = true },
-      () => { console.log( 'space' ) },
+      () => { console.log( 'space' ); this.isJumping = true },
       () => { console.log( 'ctrl' ) },
       () => { console.log( 'esc' ) },
       () => { console.log( 'tab' ) },
@@ -202,9 +203,9 @@ exports.Game = class {
   init( THREE ) {
     this.scene = new THREE.Scene()
     this.camera = new THREE.PerspectiveCamera( 100, window.innerWidth / window.innerHeight, 1, 10000 )
+    this.cameraTarget = new THREE.Vector3( 0, 5, 0 )
     this.cameraPosition = new THREE.Vector3 ( 0, 20, -40 )
     this.camera.position.set( this.cameraPosition.x, this.cameraPosition.y, this.cameraPosition.z )
-    this.cameraTarget = new THREE.Vector3( 0, 5, 0 )
     this.camera.lookAt( this.cameraTarget )
 
     let boxGeometry = new THREE.BoxGeometry( 10, 10, 10 )
@@ -240,16 +241,11 @@ exports.Game = class {
     this.move()
     this.renderer.render( this.scene, this.camera )
 
-    //this.box.position.set( this.cameraTarget.x, this.cameraTarget.y, this.cameraTarget.z )
-    //this.toonAxis.position.set( this.cameraTarget.x, this.cameraTarget.y, this.cameraTarget.z );
-
-    this.box.position.copy( this.cameraTarget );
-    this.toonAxis.position.copy( this.cameraTarget );
-
-    this.camera.position.x = this.cameraTarget.x + this.cameraPosition.x
-    this.camera.position.y = this.cameraTarget.y + this.cameraPosition.y
-    this.camera.position.z = this.cameraTarget.z + this.cameraPosition.z
+    let womboCombo = this.zeroVector().add( this.cameraTarget ).add( this.cameraPosition )
+    this.camera.position.copy( womboCombo )
     this.camera.lookAt( this.cameraTarget )
+    this.box.position.copy( this.cameraTarget )
+    this.toonAxis.position.copy( this.cameraTarget )
   }
 
   doResize() {
@@ -286,7 +282,7 @@ exports.Game = class {
     let jumpHeight = 20
 
     if( this.isJumping && !this.jumpApex ) {
-      if( this.cameraTarget.y < this.jumpHeight ) {
+      if( this.cameraTarget.y < jumpHeight ) {
           this.cameraTarget.y += 1
        } else {
           this.jumpApex = true
