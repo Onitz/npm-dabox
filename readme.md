@@ -12,6 +12,35 @@ Returns the current in-use version of the library
 Fetches an external API url (typically json) and performs callback( status, response ) when loaded.  
 Status being a nubmer (ie 400), and response being the data.
 
+`zeros( n )`  
+Returns an array of zeros of lenth _n_
+
+`sequence( n )`  
+Returns an array of numbers from 0 .. n-1
+
+`randInt( n )`  
+Returns a random int from 0 .. n-1
+
+`compress( array )`  
+Remove all zero and falsy values from an array
+
+`randomizeArray( array )`  
+Returns array with random-ordered elements using the Fisher-Yates-Knuth shuffle.
+
+`leftPad( str, len, fillerChar )`  
+Pads a string up to length _len_, with single-char: fillerChar (defaults to space character) 
+
+`toRadians( x )`  
+Convert x degrees to radians 
+
+`toDegrees( x )`  
+Convert x radians to degrees
+
+### Classes ### 
+`new WET.game( THREE, startScreen, pauseScreen, scoreScreen )`  
+Given a three.js library `let THREE = require( 'three' )`, initialise a basic game environment
+
+### Window ~~lickers~~ listeners ###
 `keyListen( isEnable, up, left, down, right, space, ctrl, space, ctrl, esc, tab )`  
 Adds some keyboard listeners to the page for typical game commands. All input params are callback functions.  
 `isEnable()`, `up()`, `left()`, `down()`, `right()` are mandatory.
@@ -41,19 +70,3 @@ WET.keyUpListen(
   () => { console.log( 'release right' ) },
 )
 ```
-
-`randomizeArray( array )`  
-Returns array with random-ordered elements using the Fisher-Yates-Knuth shuffle.
-
-`leftPad( str, len, fillerChar )`  
-Pads a string up to length len, with single-char: fillerChar (defaults to space character) 
-
-`toRadians( x )`  
-Convert x degrees to radians 
-
-`toDegrees( x )`  
-Convert x radians to degrees
-
-### Classes ### 
-`new WET.game( THREE, startScreen, pauseScreen, scoreScreen )`  
-Given a three.js library `let THREE = require( 'three' )`, initialise a basic game environment

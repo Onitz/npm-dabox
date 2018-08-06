@@ -36,6 +36,31 @@ exports.getUrl = function( url, callback ) {
   xhr.send()
 }
 
+exports.zeros = function( n ) {
+  if( typeof n === 'undefined' || n < 1 ) {
+    return []
+  }
+  return new Array( n + 1 ).join( '0' ).split( '' ).map( parseFloat )
+}
+
+exports.sequence = function( n ) {
+  return Array.apply( null, { length: n } ).map( Number.call, Number )
+}
+
+exports.randInt = function( n ) {
+  return Math.floor( Math.random() * n )
+}
+
+function compress( array ) {
+  let ret = new Array()
+  for( i in array ) {
+    if( array[ i ] ) {
+      ret.push( array[ i ] )
+    }
+  }
+  return ret
+}
+
 /*
  * All arguments are callbacks, isEnable, up, down, left, right are mandatory
  */
