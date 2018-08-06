@@ -210,19 +210,18 @@ exports.Game = class {
     window.addEventListener( 'mousedown', x => { this.isDragging = true } )
     window.addEventListener( 'mouseup', x => { this.isDragging = false } )
     window.addEventListener( 'mousemove', event => { this.dragCamera(event) } )
-
     document.addEventListener( 'mousewheel', ev => { this.mouseWheelHandler(ev) } )
     document.addEventListener( 'DOMMouseScroll', ev => { this.mouseWheelHandler(ev) } )
   } //end constructor
 
   dragCamera( event ) {
-    if( this.isDragging && event.button == 2 ) {
+    if( this.isDragging ) {
 
       let delX = event.offsetX - this.mouseState.previousPosition.x
       let delY = event.offsetY - this.mouseState.previousPosition.y
       let sensitivity = 1.8
-      let theta = toRadians( delY * -.1 )
-      let gamma = toRadians( delX * -.1 )
+      let theta = exports.toRadians( delY * -.1 )
+      let gamma = exports.toRadians( delX * -.1 )
       let deltaRotationQuaternion = new THREE.Quaternion().setFromEuler( 
         new THREE.Euler(
           theta,
@@ -230,7 +229,7 @@ exports.Game = class {
           0,
           'XYZ' ))
 
-      this.box.quaternion.multiplyQuaternions( deltaRotationQuaternion, box.quaternion )
+      this.box.quaternion.multiplyQuaternions( deltaRotationQuaternion, this.box.quaternion )
       this.camera.quaternion.multiplyQuaternions( deltaRotationQuaternion, camera.quaternion )
       this.cameraPosition.applyAxisAngle( new THREE.Vector3( 0, 1, 0), gamma)
 
@@ -240,9 +239,10 @@ exports.Game = class {
       this.box.quaternion.multiplyQuaternions( rotation, this.box.quaternion )
       this.toonAxis.quaternion.multiplyQuaternions( rotation, this.box.quaternion )
 
-    } else if( this.isDragging  ) {
-      console.log( 'left-dragging', event.button )
-    }
+    } 
+    // else if( this.isDragging && event.button == 2 ) {
+    //   console.log( 'left-dragging', event.button )
+    // }
 
     this.mouseState.previousPosition = { x: event.offsetX, y: event.offsetY }
   }
