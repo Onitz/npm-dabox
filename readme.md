@@ -1,5 +1,9 @@
 ![alt text](https://onitz.github.io/npm-wetbox/trump.svg "Make Prototypes Great Again.")
 
+### Setup ### 
+`npm install wetbox`  
+`let WET = require( 'wetbox' )` (in app.js)
+
 ### Functions ### 
 `getVersion()`  
 Returns the current in-use version of the library
@@ -22,6 +26,7 @@ WET.keyListen(
   () => { console.log( 'ctrl' ) },
   () => { console.log( 'esc' ) },
   () => { console.log( 'tab' ) },
+  () => { console.log( 'enter' ) },
 );
 ```
 
@@ -30,7 +35,14 @@ WET.keyListen(
 Returns array with random-ordered elements using the Fisher-Yates-Knuth shuffle.
 
 `leftPad( str, len, fillerChar )`  
-Pads a string up to length len, with single-char: fillerChar 
+Pads a string up to length len, with single-char: fillerChar (defaults to space character) 
 
-`initThreeWorld( THREE )  
-Given a three.js library, initialise a basic three world.
+`toRadians( x )`  
+Convert x degrees to radians 
+
+`toDegrees( x )`  
+Convert x radians to degrees
+
+### Classes ### 
+`new WET.game( THREE, startScreen, pauseScreen, scoreScreen )`  
+Given a three.js library `let THREE = require( 'three' )`, initialise a basic game environment
