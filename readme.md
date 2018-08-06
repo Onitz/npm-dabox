@@ -38,7 +38,7 @@ Convert x radians to degrees
 
 ### Classes ### 
 `new WET.game( THREE, gameTitle )`  
-Given a three.js library `let THREE = require( 'three' )`, initialize a basic game environment using threejs
+Given a three.js library `let THREE = require( 'three' )`, initialize a basic game environment using threejs. ie in index.js
 ```
 WET = require( 'wetbox' )
 THREE = require( 'three' )
@@ -51,16 +51,16 @@ game = new WET.Game( THREE, 'Wizzy boi' )
 Adds some keyboard listeners to the page for typical game commands. All input params are callback functions, first 5 are mandatory.
 ```
 WET.keyListen( 
-  () => { return true },
-  () => { console.log( 'up' ) },
-  () => { console.log( 'left' ) },
-  () => { console.log( 'down' ) },
-  () => { console.log( 'right' ) },
-  () => { console.log( 'crouch' ) },
-  () => { console.log( 'space' ) },
-  () => { console.log( 'esc' ) },
-  () => { console.log( 'tab' ) },
-  () => { console.log( 'enter' ) },
+  enabled => { return true },
+  up      => { console.log( 'up' ) },
+  left    => { console.log( 'left' ) },
+  down    => { console.log( 'down' ) },
+  right   => { console.log( 'right' ) },
+  crouch  => { console.log( 'crouch' ) },
+  space   => { console.log( 'space' ) },
+  esc     => { console.log( 'esc' ) },
+  tab     => { console.log( 'tab' ) },
+  enter   => { console.log( 'enter' ) },
 )
 ```
 
@@ -68,10 +68,10 @@ WET.keyListen(
 Adds key-release listeners for switch-keys, all args are callbacks and always enabled.
 ```
 WET.keyUpListen(
-  () => { console.log( 'release up' ) },
-  () => { console.log( 'release left' ) },
-  () => { console.log( 'release down' ) },
-  () => { console.log( 'release right' ) },
-  () => { console.log( 'release crouch' ) },
+  releaseUp     => { console.log( 'release up' ) },
+  releaseLeft   => { console.log( 'release left' ) },
+  releaseDown   => { console.log( 'release down' ) },
+  releaseRight  => { console.log( 'release right' ) },
+  releaseCrouch => { console.log( 'release crouch' ) },
 )
 ```

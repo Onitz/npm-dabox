@@ -18,6 +18,11 @@ let key = {
   enter: 13,
   ctrl: 17
 }
+let mouseButton = {
+  left: 0,
+  middle: 1,
+  right: 2,
+}
 
 exports.getVersion = function() {
   return packageJson.name + '@' + packageJson.version
@@ -148,18 +153,18 @@ exports.toDegrees = function( x ) {
 }
 
 exports.Game = class {
-
   constructor( THREE, gameTitle ) {
     let renderer, canvasEl, scene, camera, cameraTarget, cameraPosition
     let box, plane, toonAxis
     let isJumping = false 
     let jumpApex = false
-    let isDragging = false
 
     this.mouseState = {
-      zoomSensitivity: 0.1,
       minZoom: 29,
       maxZoom: 50,
+      zoomSensitivity: 0.1,
+      isLeftMouseDown: false,
+      isRightMouseDown: false,
       previousPosition: {x:0,y:0}
     }
     this.keySwitch = {
@@ -183,7 +188,7 @@ exports.Game = class {
     this.init( THREE )
     this.animate()
 
-    // misc document modifications
+    // Document modifications
     document.title = gameTitle
     document.body.oncontextmenu = x => { return false } //disable right-click
 
@@ -211,24 +216,39 @@ exports.Game = class {
       releaseRight  => { this.keySwitch.d = false },
       releaseCrouch => { this.keySwitch.c = false },
     )
-    window.addEventListener( 'mousedown', x => { this.isDragging = true } )
-    window.addEventListener( 'mouseup', x => { this.isDragging = false } )
-    window.addEventListener( 'mousemove', event => { this.dragCamera(event) } )
-    document.addEventListener( 'mousewheel', ev => { this.mouseWheelHandler(ev) } )
-    document.addEventListener( 'DOMMouseScroll', ev => { this.mouseWheelHandler(ev) } )
+    window.addEventListener( 'mousedown', e => { this.mouseDown( e ) } )
+    window.addEventListener( 'mouseup', e => { this.mouseUp( e ) } )
+    window.addEventListener( 'mousemove', e => { this.dragCamera( e ) } )
+    document.addEventListener( 'mousewheel', e => { this.mouseWheelHandler( e ) } )
+    document.addEventListener( 'DOMMouseScroll', e => { this.mouseWheelHandler( e ) } )
   } //end constructor
 
-  dragCamera( event ) {
-    if( this.isDragging ) {
+  mouseDown( e ) {
+    if( e.button === mouseButton.left ) {
+      this.mouseState.isLeftMouseDown = true
+    } else if( e.button === mouseButton.right ) {
+      this.mouseState.isRightMouseDown = true
+    }
+  }
 
+  mouseUp( e ) {
+    if( e.button === mouseButton.left ) {
+      this.mouseState.isLeftMouseDown = false
+    } else if( e.button === mouseButton.right ) {
+      this.mouseState.isRightMouseDown = false
+    }
+  }
+
+  dragCamera( event ) {
+    if( this.mouseState.isLeftMouseDown || this.mouseState.isRightMouseDown ) {
       let delX = event.offsetX - this.mouseState.previousPosition.x
       let delY = event.offsetY - this.mouseState.previousPosition.y
       let sensitivity = 1.8
-      let theta = exports.toRadians( delY * -.1 )
+      let theta = exports.toRadians( delY * -.1 ) //use in 2nd THREE.Euler param if you want more rotational axes
       let gamma = exports.toRadians( delX * -.1 )
       let deltaRotationQuaternion = new THREE.Quaternion().setFromEuler( 
         new THREE.Euler(
-          theta,
+          0,
           gamma,
           0,
           'XYZ' ))
@@ -243,11 +263,7 @@ exports.Game = class {
       this.box.quaternion.multiplyQuaternions( rotation, this.box.quaternion )
       this.toonAxis.quaternion.multiplyQuaternions( rotation, this.box.quaternion )
 
-    } 
-    // else if( this.isDragging && event.button == 2 ) {
-    //   console.log( 'left-dragging', event.button )
-    // }
-
+    }
     this.mouseState.previousPosition = { x: event.offsetX, y: event.offsetY }
   }
 
@@ -276,7 +292,8 @@ exports.Game = class {
   }
 
   resetControls() {
-    this.isDragging = false
+    this.mouseState.isRightMouseDown = false
+    this.mouseState.isLeftMouseDown = false
     this.keySwitch = {
       w: false, 
       a: false, 
@@ -362,7 +379,6 @@ exports.Game = class {
     }
     
     this.box.scale.y = this.keySwitch.c ? 0.5 : 1
-
     this.jump()
   }
 
