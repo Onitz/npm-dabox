@@ -38,14 +38,13 @@ Convert x radians to degrees
 
 ### Classes ### 
 `new WET.game( THREE, startScreen, pauseScreen, scoreScreen )`  
-Given a three.js library `let THREE = require( 'three' )`, initialise a basic game environment
+Given a three.js library `let THREE = require( 'three' )`, initialize a basic game environment
 
 ### Window ~~lickers~~ listeners ###
 `keyListen( isEnable, up, left, down, right, space, ctrl, space, ctrl, esc, tab )`  
 Adds some keyboard listeners to the page for typical game commands. All input params are callback functions.  
 `isEnable()`, `up()`, `left()`, `down()`, `right()` are mandatory.
 ```
-WET = require( 'wetbox' );
 WET.keyListen( 
   () => { return true },
   () => { console.log( 'up' ) },
@@ -57,7 +56,7 @@ WET.keyListen(
   () => { console.log( 'esc' ) },
   () => { console.log( 'tab' ) },
   () => { console.log( 'enter' ) },
-);
+)
 ```
 
 `keyUpListen( up, left, down, right )`  

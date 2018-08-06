@@ -1,6 +1,6 @@
 {
   "name": "wetbox",
-  "version": "0.3.26",
+  "version": "0.3.0",
   "description": "A collection of prototype tools",
   "main": "index.js",
   "scripts": {

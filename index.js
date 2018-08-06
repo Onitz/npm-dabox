@@ -237,14 +237,11 @@ exports.Game = class {
 
   animate() {
     window.requestAnimationFrame( x => { this.animate() } )
-
     this.move()
-
     this.renderer.render( this.scene, this.camera )
-    //this.box.position.set( this.cameraTarget.position ) //odd not working
-    this.toonAxis.position.set( this.cameraTarget.position )
-
-//this.cameraTarget.x += 0.01
+    
+    this.box.position.set( this.cameraTarget.x, this.cameraTarget.y, this.cameraTarget.z )
+    this.toonAxis.position.set( this.cameraTarget.x, this.cameraTarget.y, this.cameraTarget.z );
 
     this.camera.position.x = this.cameraTarget.x + this.cameraPosition.x
     this.camera.position.y = this.cameraTarget.y + this.cameraPosition.y
