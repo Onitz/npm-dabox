@@ -41,7 +41,7 @@ Convert x radians to degrees
 Given a three.js library `let THREE = require( 'three' )`, initialize a basic game environment
 
 ### Window ~~lickers~~ listeners ###
-`keyListen( isEnable, up, left, down, right, space, crouch, space, ctrl, esc, tab )`  
+`keyListen( isEnable, up, left, down, right, space, crouch, space, crouch, esc, tab )`  
 Adds some keyboard listeners to the page for typical game commands. All input params are callback functions.  
 `isEnable()`, `up()`, `left()`, `down()`, `right()` are mandatory.
 ```
