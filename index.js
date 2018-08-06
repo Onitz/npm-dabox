@@ -113,18 +113,21 @@ exports.Game = class {
   constructor( THREE, startScreen, pauseScreen, scoreScreen ) {
     let renderer, canvasEl, scene, camera, cameraTarget, cameraPosition
     let box, plane, toonAxis
-    let isJumping = false
+    let isJumping = false 
     let isDragging = false
 
+    this.gameState = { score: 0 }
     this.playState = {
       preGame: true,
       inGame: false,
       paused: false,
       ended: false
     }
-    this.gameState = { score: 0 }
+
     this.init( THREE )
-    this.animate() //@todo make init & animate private funcs if possible
+    this.animate()
+
+    window.addEventListener( 'resize', x => { this.doResize() } )
   }
 
   init( THREE ) {
@@ -165,17 +168,24 @@ exports.Game = class {
   } // end init()
 
   animate() {
-    window.requestAnimationFrame( x => { this.animate() } ) //lambda neccesary from within class 
+    window.requestAnimationFrame( x => { this.animate() } )
 
     this.renderer.render( this.scene, this.camera )
     //this.box.position.set( this.cameraTarget.position ) //odd not working
     this.toonAxis.position.set( this.cameraTarget.position )
 
-this.cameraTarget.x += 0.01;
+//this.cameraTarget.x += 0.01
 
     this.camera.position.x = this.cameraTarget.x + this.cameraPosition.x
     this.camera.position.y = this.cameraTarget.y + this.cameraPosition.y
     this.camera.position.z = this.cameraTarget.z + this.cameraPosition.z
     this.camera.lookAt( this.cameraTarget )
   }
+
+  doResize() {
+    this.camera.aspect = window.innerWidth / window.innerHeight
+    this.camera.updateProjectionMatrix()
+    this.renderer.setSize( window.innerWidth, window.innerHeight )  
+  }
+
 }
