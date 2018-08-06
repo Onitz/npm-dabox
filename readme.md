@@ -11,7 +11,7 @@ Status being a nubmer (ie 400), and response being the data.
 `keyListen( isEnable, up, down, left, right, space, ctrl, space, ctrl, esc, tab )`  
 Adds some keyboard listeners to the page for typical game commands. All input params are callback functions. `isEnable()`, `up()`, `down()`, `left()`, `right()` are mandatory.
 ```
-WET = require( wetbox );
+WET = require( 'wetbox' );
 WET.keyListen( 
   () => { return true },
   () => { console.log( 'up' ) },
@@ -31,3 +31,6 @@ Returns array with random-ordered elements using the Fisher-Yates-Knuth shuffle.
 
 `leftPad( str, len, fillerChar )`  
 Pads a string up to length len, with single-char: fillerChar 
+
+`initThreeWorld( THREE )  
+Given a three.js library, initialise a basic three world.
