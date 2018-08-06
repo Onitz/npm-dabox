@@ -66,7 +66,7 @@ function compress( array ) {
 /*
  * All arguments are callbacks, isEnable, up, down, left, right are mandatory
  */
-exports.keyListen = function( isEnable, up, left, down, right, space, crouch, esc, tab, enter ) {
+exports.keyListen = function( isEnable, up, left, down, right, crouch, space, esc, tab, enter ) {
   if( isEnable == null || up == null || down == null || left == null || right == null ) {
     console.error( 'WET.keyListen() is missing mandatory args')
   }
@@ -191,8 +191,8 @@ exports.Game = class {
       () => { console.log( 'left' ); this.keySwitch.a = true },
       () => { console.log( 'down' ); this.keySwitch.s = true },
       () => { console.log( 'right' ); this.keySwitch.d = true },
-      () => { console.log( 'space' ); this.isJumping = true },
       () => { console.log( 'crouch' ); this.keySwitch.c = true },
+      () => { console.log( 'space' ); this.isJumping = true },
       () => { console.log( 'esc' ) },
       () => { console.log( 'tab' ) },
       () => { console.log( 'enter' ) },

@@ -37,13 +37,12 @@ Convert x degrees to radians
 Convert x radians to degrees
 
 ### Classes ### 
-`new WET.game( THREE, startScreen, pauseScreen, scoreScreen )`  
+`new WET.game( THREE )`  
 Given a three.js library `let THREE = require( 'three' )`, initialize a basic game environment
 
 ### Window ~~lickers~~ listeners ###
-`keyListen( isEnable, up, left, down, right, space, crouch, space, crouch, esc, tab )`  
-Adds some keyboard listeners to the page for typical game commands. All input params are callback functions.  
-`isEnable()`, `up()`, `left()`, `down()`, `right()` are mandatory.
+`keyListen( isEnable, up, left, down, right, crouch, space, esc, tab, enter )`  
+Adds some keyboard listeners to the page for typical game commands. All input params are callback functions, first 5 are mandatory.
 ```
 WET.keyListen( 
   () => { return true },
@@ -51,8 +50,8 @@ WET.keyListen(
   () => { console.log( 'left' ) },
   () => { console.log( 'down' ) },
   () => { console.log( 'right' ) },
-  () => { console.log( 'space' ) },
   () => { console.log( 'crouch' ) },
+  () => { console.log( 'space' ) },
   () => { console.log( 'esc' ) },
   () => { console.log( 'tab' ) },
   () => { console.log( 'enter' ) },
@@ -60,7 +59,7 @@ WET.keyListen(
 ```
 
 `keyUpListen( up, left, down, right, crouch )`  
-Adds key-release listeners for movement switch-keys, all args are callbacks and always enabled.
+Adds key-release listeners for switch-keys, all args are callbacks and always enabled.
 ```
 WET.keyUpListen(
   () => { console.log( 'release up' ) },

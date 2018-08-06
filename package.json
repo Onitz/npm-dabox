@@ -1,6 +1,6 @@
 {
   "name": "wetbox",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A collection of prototype tools",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,21 @@
   },
   "keywords": [
     "prototype",
-    "sandbox"
+    "sandbox",
+    "array helpers",
+    "shuffle",
+    "sequence",
+    "zeros",
+    "randInt",
+    "leftPad",
+    "getUrl",
+    "call API",
+    "toRadians",
+    "toDegrees",
+    "randomizeArray",
+    "randomize array",
+    "game",
+    "keylistener"
   ],
   "author": "Andrew Dabson <cyphlix@gmai.com> (https://dabson.co)",
   "license": "ISC",
