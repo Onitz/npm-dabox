@@ -2,6 +2,20 @@
  * Remember to update readme.md doco on update!
  */
 let packageJson = require('./package.json')
+let key = {
+  left: 37,
+  up: 38,
+  right: 39,
+  down: 40,
+  space: 32,
+  w: 87,
+  a: 65,
+  s: 83,
+  d: 68,
+  esc: 27,
+  tab: 9,
+  enter: 13,
+}
 
 exports.getVersion = function() {
   return packageJson.name + '@' + packageJson.version
@@ -25,7 +39,7 @@ exports.getUrl = function( url, callback ) {
 /*
  * All arguments are callbacks, isEnable, up, down, left, right are mandatory
  */
-exports.keyListen = function( isEnable, up, down, left, right, space, ctrl, esc, tab, enter ) {
+exports.keyListen = function( isEnable, up, left, down, right, space, ctrl, esc, tab, enter ) {
   if( isEnable == null || up == null || down == null || left == null || right == null ) {
     console.error( 'WET.keyListen() is missing mandatory args')
   }
@@ -33,39 +47,41 @@ exports.keyListen = function( isEnable, up, down, left, right, space, ctrl, esc,
     if( !isEnable() ) {
       return
     }
-    let key = e.which
-    let keyLeft = 37
-    let keyUp = 38
-    let keyRight = 39
-    let keyDown = 40
-    let keySpace = 32
-    let keyW = 87
-    let keyA = 65
-    let keyS = 83
-    let keyD = 68
-    let keyEsc = 27
-    let keyTab = 9
-    let keyEnter = 13
-
-    if( key === keyUp || key === keyW ) {
+    let pressed = e.which
+    if( pressed === key.up || pressed === key.w ) {
       up()
-    } else if( key === keyLeft || key === keyA ) {
+    } else if( pressed === key.left || pressed === key.a ) {
       left()
-    } else if( key === keyDown || key === keyS ) {
+    } else if( pressed === key.down || pressed === key.s ) {
       down()
-    } else if( key === keyRight || key === keyD ) {
+    } else if( pressed === key.right || pressed === key.d ) {
       right()
-    } else if( space && key === keySpace ) {
+    } else if( space && pressed === key.space ) {
       space()
     } else if( ctrl && e.ctrlKey ) {
       ctrl()
-    } else if( esc && key === keyEsc ) {
+    } else if( esc && pressed === key.esc ) {
       esc()
-    } else if( tab && key === keyTab ) {
+    } else if( tab && pressed === key.tab ) {
       e.preventDefault()
       tab()
-    } else if( enter && key === keyEnter ) {
+    } else if( enter && pressed === key.enter ) {
       enter()
+    }
+  }
+}
+
+exports.keyUpListen = function( up, left, down, right ) {
+  window.onkeyup = function( e ) {
+    let pressed = e.which
+    if( pressed === key.up || pressed === key.w ) {
+      up()
+    } else if( pressed === key.left || pressed === key.a ) {
+      left()
+    } else if( pressed === key.down || pressed === key.s ) {
+      down()
+    } else if( pressed === key.right || pressed === key.d ) {
+      right()
     }
   }
 }
@@ -115,19 +131,47 @@ exports.Game = class {
     let box, plane, toonAxis
     let isJumping = false 
     let isDragging = false
+    let jumpApex = false
 
-    this.gameState = { score: 0 }
+    this.keySwitch = {
+      w: false, 
+      a: false, 
+      s: false, 
+      d: false,
+    } 
+    this.gameState = { 
+      score: 0,
+    }
     this.playState = {
       preGame: true,
       inGame: false,
       paused: false,
-      ended: false
+      ended: false,
     }
 
     this.init( THREE )
     this.animate()
 
+    // Add listeners
     window.addEventListener( 'resize', x => { this.doResize() } )
+    exports.keyListen( 
+      () => { return true },
+      () => { console.log( 'up' ); this.keySwitch.w = true },
+      () => { console.log( 'left' ); this.keySwitch.a = true },
+      () => { console.log( 'down' ); this.keySwitch.s = true },
+      () => { console.log( 'right' ); this.keySwitch.d = true },
+      () => { console.log( 'space' ) },
+      () => { console.log( 'ctrl' ) },
+      () => { console.log( 'esc' ) },
+      () => { console.log( 'tab' ) },
+      () => { console.log( 'enter' ) },
+    )
+    exports.keyUpListen(
+      () => { console.log( 'release up' ); this.keySwitch.w = false },
+      () => { console.log( 'release left' ); this.keySwitch.a = false },
+      () => { console.log( 'release down' ); this.keySwitch.s = false },
+      () => { console.log( 'release right' ); this.keySwitch.d = false },
+    )
   }
 
   init( THREE ) {
@@ -169,6 +213,8 @@ exports.Game = class {
   animate() {
     window.requestAnimationFrame( x => { this.animate() } )
 
+    this.move()
+
     this.renderer.render( this.scene, this.camera )
     //this.box.position.set( this.cameraTarget.position ) //odd not working
     this.toonAxis.position.set( this.cameraTarget.position )
@@ -185,6 +231,49 @@ exports.Game = class {
     this.camera.aspect = window.innerWidth / window.innerHeight
     this.camera.updateProjectionMatrix()
     this.renderer.setSize( window.innerWidth, window.innerHeight )  
+  }
+
+  move() {
+    let forwardUnit = ( new THREE.Vector3( -this.cameraPosition.x, -this.cameraPosition.y, -this.cameraPosition.z ) ).normalize()
+    let leftUnit = ( ( new THREE.Vector3( 0, 1, 0) ).cross( forwardUnit ) ).normalize()
+
+    if( this.keySwitch.w ) {
+      this.cameraTarget.x += forwardUnit.x
+      this.cameraTarget.z += forwardUnit.z
+    }
+    if( this.keySwitch.a ) {
+      this.cameraTarget.x += leftUnit.x
+      this.cameraTarget.z += leftUnit.z
+    }
+    if( this.keySwitch.s ) {
+      this.cameraTarget.x -= forwardUnit.x
+      this.cameraTarget.z -= forwardUnit.z
+    }
+    if( this.keySwitch.d ) {
+      this.cameraTarget.x -= leftUnit.x
+      this.cameraTarget.z -= leftUnit.z
+    }
+
+    this.jump()
+  }
+
+  jump() {
+    let jumpHeight = 20
+
+    if( this.isJumping && !this.jumpApex ) {
+      if( this.cameraTarget.y < this.jumpHeight ) {
+          this.cameraTarget.y += 1
+       } else {
+          this.jumpApex = true
+       }
+    } else if( this.cameraTarget.y > 5 ) {
+       this.cameraTarget.y = this.cameraTarget.y - 1
+       if( this.cameraTarget.y <= 5) {
+          this.cameraTarget.y = 5
+          this.isJumping = false
+          this.jumpApex = false
+       }
+    }
   }
 
 }
