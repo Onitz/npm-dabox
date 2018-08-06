@@ -2,7 +2,7 @@
 
 ### Setup ### 
 `npm install wetbox`  
-`let WET = require( 'wetbox' )` (in app.js)
+`let WET = require( 'wetbox' )` 
 
 ### Functions ### 
 `getVersion()`  
@@ -13,7 +13,8 @@ Fetches an external API url (typically json) and performs callback( status, resp
 Status being a nubmer (ie 400), and response being the data.
 
 `keyListen( isEnable, up, down, left, right, space, ctrl, space, ctrl, esc, tab )`  
-Adds some keyboard listeners to the page for typical game commands. All input params are callback functions. `isEnable()`, `up()`, `down()`, `left()`, `right()` are mandatory.
+Adds some keyboard listeners to the page for typical game commands. All input params are callback functions.  
+`isEnable()`, `up()`, `down()`, `left()`, `right()` are mandatory.
 ```
 WET = require( 'wetbox' );
 WET.keyListen( 

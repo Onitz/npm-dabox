@@ -3,10 +3,6 @@
  */
 let packageJson = require('./package.json')
 
-//internalArgs
-let isJumping = false;
-let isDragging = false;
-
 exports.getVersion = function() {
   return packageJson.name + '@' + packageJson.version
 }
@@ -115,8 +111,10 @@ exports.toDegrees = function( x ) {
 exports.game = class {
 
   constructor( THREE, startScreen, pauseScreen, scoreScreen ) {
-    let renderer, canvasEl, scene, camera, cameraTarget, cameraPosition;
-    let box, plane, toonAxis;
+    let renderer, canvasEl, scene, camera, cameraTarget, cameraPosition
+    let box, plane, toonAxis
+    let isJumping = false
+    let isDragging = false
 
     this.playState = {
       preGame: true,
@@ -130,50 +128,50 @@ exports.game = class {
   }
 
   init( THREE ) {
-    this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera( 100, window.innerWidth / window.innerHeight, 1, 10000 );
+    this.scene = new THREE.Scene()
+    this.camera = new THREE.PerspectiveCamera( 100, window.innerWidth / window.innerHeight, 1, 10000 )
 
-    this.cameraPosition = new THREE.Vector3 ( 0, 20, -40 );
-    this.camera.position.set( this.cameraPosition.x, this.cameraPosition.y, this.cameraPosition.z );
-    this.cameraTarget = new THREE.Vector3( 0, 5, 0 );
-    this.camera.lookAt( this.cameraTarget );
+    this.cameraPosition = new THREE.Vector3 ( 0, 20, -40 )
+    this.camera.position.set( this.cameraPosition.x, this.cameraPosition.y, this.cameraPosition.z )
+    this.cameraTarget = new THREE.Vector3( 0, 5, 0 )
+    this.camera.lookAt( this.cameraTarget )
 
-    let boxGeometry = new THREE.BoxGeometry( 10, 10, 10 );
-    let material = new THREE.MeshLambertMaterial( { color: 0x666666, flatShading: THREE.SmoothShading } );
-    let worldAxis = new THREE.AxesHelper( 25 );
-    let light = new THREE.PointLight( 0xff4000, 10 );
-    let helper = new THREE.PointLightHelper( light, 1 );
+    let boxGeometry = new THREE.BoxGeometry( 10, 10, 10 )
+    let material = new THREE.MeshLambertMaterial( { color: 0x666666, flatShading: THREE.SmoothShading } )
+    let worldAxis = new THREE.AxesHelper( 25 )
+    let light = new THREE.PointLight( 0xff4000, 10 )
+    let helper = new THREE.PointLightHelper( light, 1 )
 
-    light.position.set( 20, 15, 0 );
+    light.position.set( 20, 15, 0 )
 
-    this.toonAxis = new THREE.AxesHelper( 10 );
-    this.box = new THREE.Mesh( boxGeometry, material );
-    this.plane = new THREE.Mesh( new THREE.PlaneGeometry( 10, 15, 1, 1 ), material );
-    this.toonAxis.position.set( this.cameraTarget.x, this.cameraTarget.y, this.cameraTarget.z );
-    this.box.position.y = 10;
-    this.plane.rotation.x = exports.toRadians( -90 );
+    this.toonAxis = new THREE.AxesHelper( 10 )
+    this.box = new THREE.Mesh( boxGeometry, material )
+    this.plane = new THREE.Mesh( new THREE.PlaneGeometry( 10, 15, 1, 1 ), material )
+    this.toonAxis.position.set( this.cameraTarget.x, this.cameraTarget.y, this.cameraTarget.z )
+    this.box.position.y = 10
+    this.plane.rotation.x = exports.toRadians( -90 )
 
-    this.scene.add( light );
-    this.scene.add( new THREE.AmbientLight( 0xffffff ) );
-    this.scene.add( helper );
-    this.scene.add( worldAxis );
-    this.scene.add( this.toonAxis );
-    this.scene.add( this.box );
-    this.scene.add( this.plane );
-    this.renderer = new THREE.WebGLRenderer();
-    this.renderer.setSize( window.innerWidth, window.innerHeight );
-    this.canvasEl = document.body.appendChild( this.renderer.domElement );
-    this.canvasEl.style.display = 'block'; // fix fullscreen scrollbar issue
+    this.scene.add( light )
+    this.scene.add( new THREE.AmbientLight( 0xffffff ) )
+    this.scene.add( helper )
+    this.scene.add( worldAxis )
+    this.scene.add( this.toonAxis )
+    this.scene.add( this.box )
+    this.scene.add( this.plane )
+    this.renderer = new THREE.WebGLRenderer()
+    this.renderer.setSize( window.innerWidth, window.innerHeight )
+    this.canvasEl = document.body.appendChild( this.renderer.domElement )
+    this.canvasEl.style.display = 'block' // fix fullscreen scrollbar issue
   } // end init()
 
   animate() {
-    this.renderer.render( this.scene, this.camera );
+    this.renderer.render( this.scene, this.camera )
     this.box.position.set( this.cameraTarget.position )
-    this.toonAxis.position.set( this.cameraTarget.position );
+    this.toonAxis.position.set( this.cameraTarget.position )
 
-    this.camera.position.x = this.cameraTarget.x + this.cameraPosition.x;
-    this.camera.position.y = this.cameraTarget.y + this.cameraPosition.y;
-    this.camera.position.z = this.cameraTarget.z + this.cameraPosition.z;
-    this.camera.lookAt( this.cameraTarget );
+    this.camera.position.x = this.cameraTarget.x + this.cameraPosition.x
+    this.camera.position.y = this.cameraTarget.y + this.cameraPosition.y
+    this.camera.position.z = this.cameraTarget.z + this.cameraPosition.z
+    this.camera.lookAt( this.cameraTarget )
   }
 }
