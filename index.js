@@ -115,12 +115,6 @@ exports.keyUpListen = function( up, left, down, right, crouch ) {
   }
 }
 
-exports.mouseListen = function( isEnable, leftClick, rightClick, leftDrag, rightDrag, scroll ) {
-  if( isEnable == null || leftClick == null || rightClick == null || leftDrag == null || rightDrag == null || scroll == null) {
-    console.error( 'WET.mouseListen() is missing mandatory args')
-  } 
-}
-
 exports.randomizeArray = function( array ) {
   let currentIndex = array.length, temporaryValue, randomIndex
   while ( 0 !== currentIndex ) {
@@ -159,16 +153,22 @@ exports.Game = class {
     let renderer, canvasEl, scene, camera, cameraTarget, cameraPosition
     let box, plane, toonAxis
     let isJumping = false 
-    let isDragging = false
     let jumpApex = false
+    let isDragging = false
 
+    this.mouseState = {
+      zoomSensitivity: 0.2,
+      minZoom: 29,
+      maxZoom: 55,
+      previousPosition: {x:0,y:0}
+    }
     this.keySwitch = {
       w: false, 
       a: false, 
       s: false, 
       d: false,
       c: false,
-    } 
+    }
     this.gameState = { 
       score: 0,
     }
@@ -185,7 +185,9 @@ exports.Game = class {
 
     // Add listeners
     window.addEventListener( 'resize', x => { this.doResize() } )
+    window.addEventListener( 'focus', x => { this.resetControls() } )
     window.addEventListener( 'blur', x => { this.resetControls() } )
+
     exports.keyListen( 
       enabled => { return true },
       up      => { this.keySwitch.w = true },
@@ -205,6 +207,50 @@ exports.Game = class {
       releaseRight  => { this.keySwitch.d = false },
       releaseCrouch => { this.keySwitch.c = false },
     )
+    window.addEventListener( 'mousedown', x => { this.isDragging = true } )
+    window.addEventListener( 'mouseup', x => { this.isDragging = false } )
+    window.addEventListener( 'mousemove', event => {
+      let delX = event.offsetX - this.mouseState.previousPosition.x
+      let delY = event.offsetY - this.mouseState.previousPosition.y
+
+      if( this.isDragging ) {
+        if( event.button == 2 ) {
+          console.log( 'right-dragging' )
+          dragCamera( delX, delY )
+        } else {
+          console.log( 'left-dragging', event.button )
+        }
+      }
+
+      this.mouseState.previousPosition = { x: event.offsetX, y: event.offsetY }
+    })
+
+    document.addEventListener( 'mousewheel', ev => { this.mouseWheelHandler(ev) } )
+    document.addEventListener( 'DOMMouseScroll', ev => { this.mouseWheelHandler(ev) } )
+  } //end constructor
+
+  mouseWheelHandler(ev) {
+    let e = window.event || ev
+    let delta = Math.max( -1, Math.min( 1, ( e.wheelDelta || -e.detail ) ) )
+    let magnitudePopPop = this.cameraPosition.lengthSq()
+    let del = 1
+
+    if ( delta < 0 ) {
+      if( magnitudePopPop <= this.mouseState.maxZoom * this.mouseState.maxZoom ) {
+        del += this.mouseState.zoomSensitivity
+        this.cameraPosition.multiplyScalar( del )
+        this.camera.fov *= del
+        this.camera.updateProjectionMatrix()
+      }
+    } else {
+      if( magnitudePopPop >= this.mouseState.minZoom * this.mouseState.minZoom ) {
+        del -= this.mouseState.zoomSensitivity
+        this.cameraPosition.multiplyScalar( del )
+        this.camera.fov *= del
+        this.camera.updateProjectionMatrix()
+      }
+
+    }
   }
 
   resetControls() {
