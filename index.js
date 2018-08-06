@@ -133,7 +133,6 @@ exports.Game = class {
   init( THREE ) {
     this.scene = new THREE.Scene()
     this.camera = new THREE.PerspectiveCamera( 100, window.innerWidth / window.innerHeight, 1, 10000 )
-
     this.cameraPosition = new THREE.Vector3 ( 0, 20, -40 )
     this.camera.position.set( this.cameraPosition.x, this.cameraPosition.y, this.cameraPosition.z )
     this.cameraTarget = new THREE.Vector3( 0, 5, 0 )
@@ -162,9 +161,9 @@ exports.Game = class {
     this.scene.add( this.box )
     this.scene.add( this.plane )
     this.renderer = new THREE.WebGLRenderer()
-    this.renderer.setSize( window.innerWidth, window.innerHeight )
     this.canvasEl = document.body.appendChild( this.renderer.domElement )
     this.canvasEl.style.display = 'block' // fix fullscreen scrollbar issue
+    this.doResize()
   } // end init()
 
   animate() {
