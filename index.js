@@ -220,7 +220,7 @@ exports.Game = class {
     let light = new THREE.PointLight( 0xff4000, 10 )
     let helper = new THREE.PointLightHelper( light, 1 )
 
-    light.position.set( 20, 15, 0 )
+    light.position.set( 20, 15, -15 )
     boxGeometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 5, 0 ) ) //offset box origin for crouching
 
     this.toonAxis = new THREE.AxesHelper( 10 )
