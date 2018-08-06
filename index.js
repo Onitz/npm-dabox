@@ -157,9 +157,9 @@ exports.Game = class {
     let isDragging = false
 
     this.mouseState = {
-      zoomSensitivity: 0.2,
+      zoomSensitivity: 0.1,
       minZoom: 29,
-      maxZoom: 55,
+      maxZoom: 50,
       previousPosition: {x:0,y:0}
     }
     this.keySwitch = {
@@ -209,25 +209,43 @@ exports.Game = class {
     )
     window.addEventListener( 'mousedown', x => { this.isDragging = true } )
     window.addEventListener( 'mouseup', x => { this.isDragging = false } )
-    window.addEventListener( 'mousemove', event => {
-      let delX = event.offsetX - this.mouseState.previousPosition.x
-      let delY = event.offsetY - this.mouseState.previousPosition.y
-
-      if( this.isDragging ) {
-        if( event.button == 2 ) {
-          console.log( 'right-dragging' )
-          dragCamera( delX, delY )
-        } else {
-          console.log( 'left-dragging', event.button )
-        }
-      }
-
-      this.mouseState.previousPosition = { x: event.offsetX, y: event.offsetY }
-    })
+    window.addEventListener( 'mousemove', event => { this.dragCamera(event) } )
 
     document.addEventListener( 'mousewheel', ev => { this.mouseWheelHandler(ev) } )
     document.addEventListener( 'DOMMouseScroll', ev => { this.mouseWheelHandler(ev) } )
   } //end constructor
+
+  dragCamera( event ) {
+    if( this.isDragging && event.button == 2 ) {
+
+      let delX = event.offsetX - this.mouseState.previousPosition.x
+      let delY = event.offsetY - this.mouseState.previousPosition.y
+      let sensitivity = 1.8
+      let theta = toRadians( delY * -.1 )
+      let gamma = toRadians( delX * -.1 )
+      let deltaRotationQuaternion = new THREE.Quaternion().setFromEuler( 
+        new THREE.Euler(
+          theta,
+          gamma,
+          0,
+          'XYZ' ))
+
+      this.box.quaternion.multiplyQuaternions( deltaRotationQuaternion, box.quaternion )
+      this.camera.quaternion.multiplyQuaternions( deltaRotationQuaternion, camera.quaternion )
+      this.cameraPosition.applyAxisAngle( new THREE.Vector3( 0, 1, 0), gamma)
+
+      let rotation = new THREE.Quaternion()
+      rotation.setFromAxisAngle( new THREE.Vector3( 0, 1, 0), gamma * sensitivity )
+      this.cameraPosition.applyQuaternion( rotation )
+      this.box.quaternion.multiplyQuaternions( rotation, this.box.quaternion )
+      this.toonAxis.quaternion.multiplyQuaternions( rotation, this.box.quaternion )
+
+    } else if( this.isDragging  ) {
+      console.log( 'left-dragging', event.button )
+    }
+
+    this.mouseState.previousPosition = { x: event.offsetX, y: event.offsetY }
+  }
 
   mouseWheelHandler(ev) {
     let e = window.event || ev
@@ -296,6 +314,7 @@ exports.Game = class {
     this.renderer = new THREE.WebGLRenderer()
     this.canvasEl = document.body.appendChild( this.renderer.domElement )
     this.canvasEl.style.display = 'block' // fix fullscreen scrollbar issue
+    document.body.oncontextmenu = x => { return false } //disable right-click
     this.doResize()
   } // end init()
 
