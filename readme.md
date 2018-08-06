@@ -8,18 +8,20 @@ Returns the current in-use version of the library
 Fetches an external API url (typically json) and performs callback( status, response ) when loaded.  
 Status being a nubmer (ie 400), and response being the data.
 
-`keyListen( isEnable, up, down, left, right, space, ctrl)`  
-Adds some keyboard listeners to the page for typical game commands. All input parameters are callback functions.
+`keyListen( isEnable, up, down, left, right, space, ctrl, space, ctrl, esc, tab )`  
+Adds some keyboard listeners to the page for typical game commands. All input params are callback functions. `isEnable()`, `up()`, `down()`, `left()`, `right()` are mandatory.
 ```
-wet = require( wetbox );
-wet.keyListen( 
+WET = require( wetbox );
+WET.keyListen( 
   () => { return true },
-  () => { console.log( 'up' ) }, 
-  () => { console.log( 'down' ) }, 
-  () => { console.log( 'left' ) }, 
-  () => { console.log( 'right' ) }, 
-  () => { console.log( 'space' ) }, 
-  () => { console.log( 'ctrl' ) } 
+  () => { console.log( 'up' ) },
+  () => { console.log( 'down' ) },
+  () => { console.log( 'left' ) },
+  () => { console.log( 'right' ) },
+  () => { console.log( 'space' ) },
+  () => { console.log( 'ctrl' ) },
+  () => { console.log( 'esc' ) },
+  () => { console.log( 'tab' ) },
 );
 ```
 

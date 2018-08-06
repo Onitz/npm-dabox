@@ -1,3 +1,6 @@
+/* 
+ * Remember to update readme.md doco on update!
+ */
 let packageJson = require('./package.json')
 
 exports.getVersion = function() {
@@ -23,6 +26,9 @@ exports.getUrl = function( url, callback ) {
  * All arguments are callbacks, isEnable, up, down, left, right are mandatory
  */
 exports.keyListen = function( isEnable, up, down, left, right, space, ctrl, esc, tab ) {
+  if( isEnable == null || up == null || down == null || left == null || right == null ) {
+    console.error( 'WET.keyListen() is missing mandatory args')
+  }
   window.onkeydown = function( e ) {
     if( !isEnable() ) {
       return
@@ -85,8 +91,6 @@ exports.leftPad = function( str, len, fillerChar=' ' ) {
   return fillerChar.repeat( len - str.length ) + str
 }
 
-exports.initCanvas = function() {
-  let canvasEl = document.createElement('canvas')
-  canvasEl.setAttribute('id', 'canvas')
-  document.body.appendChild( canvasEl )
+exports.initThreeWorld = function( THREE ) {
+  return null
 }
