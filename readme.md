@@ -37,8 +37,14 @@ Convert x degrees to radians
 Convert x radians to degrees
 
 ### Classes ### 
-`new WET.game( THREE )`  
-Given a three.js library `let THREE = require( 'three' )`, initialize a basic game environment
+`new WET.game( THREE, gameTitle )`  
+Given a three.js library `let THREE = require( 'three' )`, initialize a basic game environment using threejs
+```
+WET = require( 'wetbox' )
+THREE = require( 'three' )
+game = new WET.Game( THREE, 'Wizzy boi' )
+```
+
 
 ### Window ~~lickers~~ listeners ###
 `keyListen( isEnable, up, left, down, right, crouch, space, esc, tab, enter )`  

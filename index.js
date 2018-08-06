@@ -149,7 +149,7 @@ exports.toDegrees = function( x ) {
 
 exports.Game = class {
 
-  constructor( THREE, startScreen, pauseScreen, scoreScreen ) {
+  constructor( THREE, gameTitle ) {
     let renderer, canvasEl, scene, camera, cameraTarget, cameraPosition
     let box, plane, toonAxis
     let isJumping = false 
@@ -182,6 +182,10 @@ exports.Game = class {
     this.zeroVector = x => { return new THREE.Vector3( 0, 0, 0 ) }
     this.init( THREE )
     this.animate()
+
+    // misc document modifications
+    document.title = gameTitle
+    document.body.oncontextmenu = x => { return false } //disable right-click
 
     // Add listeners
     window.addEventListener( 'resize', x => { this.doResize() } )
@@ -315,7 +319,6 @@ exports.Game = class {
     this.renderer = new THREE.WebGLRenderer()
     this.canvasEl = document.body.appendChild( this.renderer.domElement )
     this.canvasEl.style.display = 'block' // fix fullscreen scrollbar issue
-    document.body.oncontextmenu = x => { return false } //disable right-click
     this.doResize()
   } // end init()
 
