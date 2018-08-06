@@ -12,9 +12,11 @@ let key = {
   a: 65,
   s: 83,
   d: 68,
+  c: 67,
   esc: 27,
   tab: 9,
   enter: 13,
+  ctrl: 17
 }
 
 exports.getVersion = function() {
@@ -64,7 +66,7 @@ function compress( array ) {
 /*
  * All arguments are callbacks, isEnable, up, down, left, right are mandatory
  */
-exports.keyListen = function( isEnable, up, left, down, right, space, ctrl, esc, tab, enter ) {
+exports.keyListen = function( isEnable, up, left, down, right, space, crouch, esc, tab, enter ) {
   if( isEnable == null || up == null || down == null || left == null || right == null ) {
     console.error( 'WET.keyListen() is missing mandatory args')
   }
@@ -83,8 +85,8 @@ exports.keyListen = function( isEnable, up, left, down, right, space, ctrl, esc,
       right()
     } else if( space && pressed === key.space ) {
       space()
-    } else if( ctrl && e.ctrlKey ) {
-      ctrl()
+    } else if( crouch && ( pressed === key.ctrl || pressed === key.c ) ) {
+      crouch()
     } else if( esc && pressed === key.esc ) {
       esc()
     } else if( tab && pressed === key.tab ) {
@@ -96,17 +98,19 @@ exports.keyListen = function( isEnable, up, left, down, right, space, ctrl, esc,
   }
 }
 
-exports.keyUpListen = function( up, left, down, right ) {
+exports.keyUpListen = function( up, left, down, right, crouch ) {
   window.onkeyup = function( e ) {
-    let pressed = e.which
-    if( pressed === key.up || pressed === key.w ) {
+    let released = e.which
+    if( released === key.up || released === key.w ) {
       up()
-    } else if( pressed === key.left || pressed === key.a ) {
+    } else if( released === key.left || released === key.a ) {
       left()
-    } else if( pressed === key.down || pressed === key.s ) {
+    } else if( released === key.down || released === key.s ) {
       down()
-    } else if( pressed === key.right || pressed === key.d ) {
+    } else if( released === key.right || released === key.d ) {
       right()
+    } else if( released === key.ctrl || released === key.c ){
+      crouch()
     }
   }
 }
@@ -163,6 +167,7 @@ exports.Game = class {
       a: false, 
       s: false, 
       d: false,
+      c: false,
     } 
     this.gameState = { 
       score: 0,
@@ -187,7 +192,7 @@ exports.Game = class {
       () => { console.log( 'down' ); this.keySwitch.s = true },
       () => { console.log( 'right' ); this.keySwitch.d = true },
       () => { console.log( 'space' ); this.isJumping = true },
-      () => { console.log( 'ctrl' ) },
+      () => { console.log( 'crouch' ); this.keySwitch.c = true },
       () => { console.log( 'esc' ) },
       () => { console.log( 'tab' ) },
       () => { console.log( 'enter' ) },
@@ -197,6 +202,7 @@ exports.Game = class {
       () => { console.log( 'release left' ); this.keySwitch.a = false },
       () => { console.log( 'release down' ); this.keySwitch.s = false },
       () => { console.log( 'release right' ); this.keySwitch.d = false },
+      () => { console.log( 'release crouch' ); this.keySwitch.c = false },
     )
   }
 
@@ -215,12 +221,12 @@ exports.Game = class {
     let helper = new THREE.PointLightHelper( light, 1 )
 
     light.position.set( 20, 15, 0 )
+    boxGeometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 5, 0 ) ) //offset box origin for crouching
 
     this.toonAxis = new THREE.AxesHelper( 10 )
     this.box = new THREE.Mesh( boxGeometry, material )
     this.plane = new THREE.Mesh( new THREE.PlaneGeometry( 10, 15, 1, 1 ), material )
     this.toonAxis.position.set( this.cameraTarget.x, this.cameraTarget.y, this.cameraTarget.z )
-    this.box.position.y = 10
     this.plane.rotation.x = exports.toRadians( -90 )
 
     this.scene.add( light )
@@ -274,6 +280,8 @@ exports.Game = class {
       this.cameraTarget.x -= leftUnit.x
       this.cameraTarget.z -= leftUnit.z
     }
+    
+    this.box.scale.y = this.keySwitch.c ? 0.5 : 1
 
     this.jump()
   }
