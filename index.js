@@ -108,7 +108,7 @@ exports.toDegrees = function( x ) {
   return x * 180 / Math.PI
 }
 
-exports.game = class {
+exports.Game = class {
 
   constructor( THREE, startScreen, pauseScreen, scoreScreen ) {
     let renderer, canvasEl, scene, camera, cameraTarget, cameraPosition
@@ -165,9 +165,13 @@ exports.game = class {
   } // end init()
 
   animate() {
+    window.requestAnimationFrame( x => { this.animate() } ) //lambda neccesary from within class 
+
     this.renderer.render( this.scene, this.camera )
-    this.box.position.set( this.cameraTarget.position )
+    //this.box.position.set( this.cameraTarget.position ) //odd not working
     this.toonAxis.position.set( this.cameraTarget.position )
+
+this.cameraTarget.x += 0.01;
 
     this.camera.position.x = this.cameraTarget.x + this.cameraPosition.x
     this.camera.position.y = this.cameraTarget.y + this.cameraPosition.y
