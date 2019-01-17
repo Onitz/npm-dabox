@@ -63,7 +63,6 @@ THREE = require( 'three' )
 game = new WET.Game( THREE, 'Wizzy boi' )
 ```
 
-
 ### Window ~~lickers~~ listeners ###
 `keyListen( isEnable, up, left, down, right, crouch, space, esc, tab, enter )`  
 Adds some keyboard listeners to the page for typical game commands. All input params are callback functions, first 5 are mandatory.
@@ -93,3 +92,8 @@ WET.keyUpListen(
   releaseCrouch => { console.log( 'release crouch' ) },
 )
 ```
+
+### Administration ###
+`Updating`
+`npm publish --dry-run`
+`npm publish`

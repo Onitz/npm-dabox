@@ -51,15 +51,15 @@ exports.zeros = function( n ) {
 }
 
 exports.consecutive = function( n ) {
-  return sequence( n );
+  return exports.sequence( n );
 }
 
 exports.sequence = function( n ) {
-  return Array.from({length: n}, (x, y) => y);
+  return Array.from( {length: n}, (x, y) => y );
 }
 
 exports.hasDuplicates = function( array ) {
-  return (new Set(array)).size !== arr.length;
+  return ( new Set( array) ).size !== array.length;
 }
 
 exports.randInt = function( n ) {
@@ -79,28 +79,28 @@ exports.clearEmptyElements = function( array ) {
 exports.choose = function( n, k ) { // n & k are part of the mathematical choose() function
   let ret = 1;
   
-  if(k===0 || k===n) {
+  if( k===0 || k===n ) {
     return 1;
   } else if( k===1 ) {
     return n;
   } else if( k<0 || k>n) {
     return 0;
-  } else if(k > n/2) {
+  } else if( k > n/2 ) {
     k = n - k;
   }
 
   for(let i=1;i<=k;i++){
-    ret*=(n-k+i)/i;
+    ret *= ( n - k + i ) / i;
   }
-  return Math.round(ret);
+  return Math.round( ret );
 }
 
 exports.ithIteration = function( n, k, i ) {
-  return ithCombination(n, k, i); 
+  return exports.ithCombination(n, k, i); 
 }
 
 exports.inverseIthIteration = function( n, combinationArray ) {
-  return inverseIthCombination(n, combinationArray);
+  return exports.inverseIthCombination(n, combinationArray);
 }
 
 exports.ithCombination = function( n, k, i ) { // i is ith iteration 0 <= i < nCk
@@ -108,32 +108,32 @@ exports.ithCombination = function( n, k, i ) { // i is ith iteration 0 <= i < nC
   if( n.constructor === Array ) {
     arr = n;
   } else {
-    let limit = choose(n,k);
+    let limit = exports.choose(n,k);
     if(i >= limit) {
       throw `i must be below nCk (${limit})!`;
     }
-    arr = sequence(n);
+    arr = exports.sequence(n);
   }
   if( k === 0 ) {
     return [];
   } else if( arr.length === k ) {
     return arr;
   } else {
-    let remainingSlots = choose(arr.length-1, k-1);
+    let remainingSlots = exports.choose(arr.length-1, k-1);
     if( i < remainingSlots ) {
-      return [arr[0]].concat( ithCombination(arr.slice(1), k-1, i) );
+      return [arr[0]].concat( exports.ithCombination(arr.slice(1), k-1, i) );
     } 
-    return ithCombination(arr.slice(1), k, i-remainingSlots);
+    return exports.ithCombination(arr.slice(1), k, i-remainingSlots);
   }
 }
 
 exports.inverseIthCombination = function( n, combinationArray ) { // returns a 0-indexed iteration 0<=i<n array
   let k = combinationArray.length;
-  let position = Array.from(combinationArray, x => sequence(n).indexOf(x));
+  let position = Array.from(combinationArray, x => exports.sequence(n).indexOf(x));
   if( position.includes(-1)) {
     throw `Error: combinationArray must contain elements in range 0 <= x < ${n}.`;
   }
-  if( hasDuplicates(position)) {
+  if( exports.hasDuplicates(position)) {
     throw 'Error: combinationArray is a combination and should not contain duplicates.'
   }
   position.sort((a,b)=>a-b);
@@ -141,7 +141,7 @@ exports.inverseIthCombination = function( n, combinationArray ) { // returns a 0
 
   for(let i=0;i<position.length;i++) {
     let last = i===0 ? 0 : position[i-1]+1;
-    add = choose(n-last, k-i) - choose(n-position[i], k-i);
+    add = exports.choose(n-last, k-i) - exports.choose(n-position[i], k-i);
     ret += add;
   }
 
