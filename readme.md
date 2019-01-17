@@ -94,6 +94,6 @@ WET.keyUpListen(
 ```
 
 ### Administration ###
-`Updating`
-`npm publish --dry-run`
-`npm publish`
+First update the version major/minor/patch in package.json, commit, and..  
+`npm login`  
+`npm publish`  
