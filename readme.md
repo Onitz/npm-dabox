@@ -21,7 +21,7 @@ Returns an array of numbers from 0 .. n-1
 `randInt( n )`  
 Returns a random int from 0 .. n-1
 
-`compress( array )`  
+`clearEmptyElements( array )`  
 Remove all zero and falsy values from an array
 
 `randomizeArray( array )`  
@@ -35,6 +35,24 @@ Convert x degrees to radians
 
 `toDegrees( x )`  
 Convert x radians to degrees
+
+`hasDuplicates( n )`
+Returns true if array contains duplicates
+
+`choose( n, k )`
+The mathematical choose function. One-indexed 
+
+`ithIteration( n, k, i )`
+Alias for `ithCombination( n, k, i )`
+
+`inverseIthIteration( n, combinationArray )`
+Alias for `inverseIthCombination( n, combinationArray )`
+
+`ithCombination( n, k, i )`
+Given a set of `n` items, `k` choices, and an index `i`, give me a k-sized array of the ith combination. 0 <= i < n.
+
+`inverseIthCombination( n, combinationArray )`
+Given a number `n` and combinationArray, convert the array into an ith ordering. k is infered from `combinationArray`s length.
 
 ### Classes ### 
 `new WET.game( THREE, gameTitle )`  
