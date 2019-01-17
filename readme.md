@@ -94,6 +94,6 @@ WET.keyUpListen(
 ```
 
 ### Administration ###
-First update the version major/minor/patch in package.json, commit, and..  
+First update the `major.minor.patch` version in package.json, commit, and..  
 `npm login`  
 `npm publish`  
